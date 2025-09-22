@@ -1,52 +1,37 @@
-"use client";
+'use client'
 
-import ReactQuill from "react-quill";
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import Highlight from '@tiptap/extension-highlight'
+import Color from '@tiptap/extension-color'
+import { TextStyle } from '@tiptap/extension-text-style'
+import Underline from '@tiptap/extension-underline'
 
-// This modules object configures editor features like toolbar
-const modules = {
-  // toolbar what tools appear in the UI
-  toolbar: [
-    [{ header: [1, 2, 3, 4, 5, false] }],
-    ["bold", "italic", "underline"],
-    [{ color: [] }, { background: [] }],
-    ["blockquote", "code-block"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ align: [] }],
-    [{ size: ["small", false, "large", "huge"] }],
-    ["link", "image"],
-  ],
-};
+export default function EditorPage() {
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3], // limit h1, h2, h3
+        },
+      }),
+      Highlight,
+      Color,
+      TextStyle,
+      Underline,
+    ],
+    content: `
+      <h1>Welcome to Tiptap</h1>
+      <p>You can write <u>underlined</u>, <mark>highlighted</mark>, or <span style="color:red">colored</span> text here!</p>
+    `,
+    autofocus: 'end',
+    editable: true,
+    immediatelyRender: false, // กัน hydration mismatch
+  })
 
-// Defines what is preserved in the content when editing
-// (The functionality of the toolbar tools)
-const formats = [
-  "header",
-  "bold",
-  "color",
-  "background",
-  "italic",
-  "underline",
-  "blockquote",
-  "code-block",
-  "list",
-  "bullet",
-  "align",
-  "size",
-  "link",
-  "image",
-];
-
-const ReactEditor = () => {
   return (
-    <div className="max-w-[1000px] mx-auto mt-10">
-      <ReactQuill
-        theme="snow"
-        modules={modules}
-        formats={formats}
-        placeholder="Write something awesome..."
-      />
+    <div className="p-6 max-w-2xl mx-auto">
+      {editor ? <EditorContent editor={editor} /> : <p>Loading editor…</p>}
     </div>
-  );
-};
-
-export default ReactEditor;
+  )
+}
