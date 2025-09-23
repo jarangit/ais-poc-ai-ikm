@@ -3,8 +3,14 @@
 
 import dynamic from "next/dynamic";
 
+export type ClientSideCustomEditorProps = {
+  value?: string;
+  onChange: (val: string) => void;
+};
 const ClientSideCustomEditor = dynamic(() => import("./ck-editor"), {
   ssr: false,
 });
 
-export default ClientSideCustomEditor;
+export default function ClientSideCustomEditorWrapper(props: ClientSideCustomEditorProps) {
+  return <ClientSideCustomEditor {...props} />;
+}

@@ -31,6 +31,7 @@ export default function EditorPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
+     
       {editor ? <EditorContent editor={editor} /> : <p>Loading editor…</p>}
     </div>
   )
